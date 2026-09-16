@@ -1,4 +1,4 @@
-
+using Scalar.AspNetCore;
 namespace logistikk
 {
     public class Program
@@ -19,12 +19,12 @@ namespace logistikk
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
+                app.MapScalarApiReference();
             }
 
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
