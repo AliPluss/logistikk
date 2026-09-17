@@ -93,4 +93,4 @@ Eksempel på valideringsfeil ved registrering:
 
 ## Kontakt
 
-Backend utvikles av Ali (Milan). Ta kontakt ved spørsmål om API-et.
+Backend utvikles av 404: Team Not Found. Ta kontakt ved spørsmål om API-et.
