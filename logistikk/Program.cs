@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Options;
+using logistikk.Middleware;
 
 namespace logistikk
 {
@@ -61,6 +62,9 @@ namespace logistikk
 
 
             var app = builder.Build();
+
+            // Må ligge først i pipelinen for å fange feil fra alt som kommer etter
+            app.UseMiddleware<ExceptionMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

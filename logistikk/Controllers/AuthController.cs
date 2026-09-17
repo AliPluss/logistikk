@@ -116,5 +116,6 @@ namespace logistikk.Controllers
         {
             return Ok("Du er logget inn");
         }
+
     }
-}
+    }
