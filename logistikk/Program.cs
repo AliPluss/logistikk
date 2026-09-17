@@ -4,6 +4,10 @@ using logistikk.Data;
 using logistikk.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Options;
 
 namespace logistikk
 {
@@ -34,7 +38,27 @@ namespace logistikk
                 options.Lockout.MaxFailedAccessAttempts = 5;
             })
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddSignInManager();
+
+            var jwtKoey = builder.Configuration["jwt:key"]?? throw new InvalidOperationException("JWT:key mangler i konfigurasjonen");
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(Options =>
+                {
+                    Options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["jwt:issuer"],
+                        ValidAudience = builder.Configuration["jwt:audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKoey))
+                    };
+
+                });
+
+
 
             var app = builder.Build();
 
@@ -47,6 +71,7 @@ namespace logistikk
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

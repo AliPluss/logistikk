@@ -1,5 +1,6 @@
 ﻿using logistikk.DTOs;
 using logistikk.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,11 +31,7 @@ namespace logistikk.Controllers
 
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(error.Code, error.Description);
-                }
-                return ValidationProblem(ModelState);
+                return BadRequest(result.Errors.Select(e => e.Description));
             }
 
             var response = new UserDto
@@ -45,6 +42,13 @@ namespace logistikk.Controllers
             };
 
             return StatusCode(201, response);
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public ActionResult<string> Me()
+        {
+            return Ok("Du er logget inn");
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace logistikk.DTOs
@@ -16,5 +18,8 @@ namespace logistikk.DTOs
         [Required]
         [MaxLength(100)]
         public string FirstName { get; set; } = string.Empty;
+
+      
     }
-}
+     
+    }
